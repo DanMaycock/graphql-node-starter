@@ -1,0 +1,17 @@
+
+type User {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    name: String!
+    email: String! @unique
+    password: String!
+    testItems: [TestItem]
+}
+
+type TestItem {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    field1: String!
+    field2: String!
+    user: User
+}

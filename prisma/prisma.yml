@@ -1,0 +1,6 @@
+#endpoint: ''endpoint: https://eu1.prisma.sh/danmaycock13-ecc912/elips-node/dev
+
+datamodel: datamodel.prisma
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client

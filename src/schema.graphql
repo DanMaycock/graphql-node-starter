@@ -1,11 +1,17 @@
 type Query {
+    users: [User!]!
     testItems: [TestItem!]!
 }
 
 type Mutation {
     addTestItem(field1: String!, field2: String): TestItem!
-    signup(name: String!, email: String!, password: String!): AuthPayload
-    login(name: String!, email: String!): AuthPayload
+    signup(name: String!, email: String!, password: String!, role: UserRole!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+}
+
+enum UserRole {
+    ADMIN
+    USER
 }
 
 type AuthPayload {
@@ -15,9 +21,9 @@ type AuthPayload {
 
 type User {
     id: ID!
-    username: String!
+    name: String!
     email: String!
-    testItems: [TestItem!]!
+    role: UserRole!
 }
 
 type TestItem {

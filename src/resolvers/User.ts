@@ -1,10 +1,14 @@
 import { Context } from 'graphql-yoga/dist/types';
-import { TestItem, User } from '../generated/prisma-client';
+import { User, UserRole } from '../generated/prisma-client';
 
 export default {
+    UserRole: {
+        USER: 'USER',
+        ADMIN: 'ADMIN',
+    },
     User: {
-        testItems: (parent: User, _args: {}, context: Context): [TestItem] => {
-            return context.prisma.user({ id: parent.id }).testItems();
+        role: (parent: User, _args: {}, context: Context): UserRole => {
+            return context.prisma.user({ id: parent.id }).role();
         },
     },
 };

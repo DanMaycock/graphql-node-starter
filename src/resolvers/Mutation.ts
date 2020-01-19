@@ -1,9 +1,13 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { getUserId } from '../utils';
-import { User, TestItem, TestItemCreateInput, UserCreateInput } from '../generated/prisma-client';
+import { User, TestItem, TestItemCreateInput, UserCreateInput, UserRole } from '../generated/prisma-client';
 import { Context } from 'graphql-yoga/dist/types';
 
+export interface TokenData {
+    readonly userId: string;
+    readonly userRole: UserRole;
+}
 interface AuthPayload {
     token: string;
     user: User;
@@ -14,7 +18,8 @@ export default {
         signup: async (_parent: undefined, args: UserCreateInput, context: Context): Promise<AuthPayload> => {
             const password = await bcrypt.hash(args.password, 10);
             const user = await context.prisma.createUser({ ...args, password });
-            const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+            const tokenData: TokenData = { userId: user.id, userRole: user.role };
+            const token = jwt.sign(tokenData, process.env.APP_SECRET);
             return { token, user };
         },
 
@@ -28,8 +33,8 @@ export default {
             if (!valid) {
                 throw new Error('Invalid password');
             }
-
-            const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+            const tokenData: TokenData = { userId: user.id, userRole: user.role };
+            const token = jwt.sign(tokenData, process.env.APP_SECRET);
             return { token, user };
         },
 

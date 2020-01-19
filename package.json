@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.ts",
     "scripts": {
+        "prisma:deploy": "prisma deploy -e .env",
         "start": "node --inspect=5858 -r ts-node/register -r dotenv/config ./src/index.ts",
         "start:watch": "nodemon",
         "build": "tsc",
